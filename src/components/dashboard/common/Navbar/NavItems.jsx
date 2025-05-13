@@ -12,18 +12,13 @@ export const NAV_ITEMS = [
         href: "#",
       },
       {
-        label: "Lifestyle",
+        label: "Taller",
         subLabel: "Consejos para mejorar tu día a día",
         href: "#",
       },
       {
-        label: "Viajes",
+        label: "Practica Supervisada",
         subLabel: "Descubre nuevos destinos",
-        href: "#",
-      },
-      {
-        label: "Recetas",
-        subLabel: "Cocina saludable y deliciosa",
         href: "#",
       },
     ],
@@ -35,9 +30,5 @@ export const NAV_ITEMS = [
   {
     label: "Tendencias",
     href: "#",
-  },
-  {
-    label: "Acerca de",
-    href: "#",
-  },
+  }
 ];

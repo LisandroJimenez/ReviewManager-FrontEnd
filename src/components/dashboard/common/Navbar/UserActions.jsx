@@ -10,19 +10,8 @@ export default function UserActions({ isLoggedIn, setIsLoggedIn }) {
 
 
             <>
-                <Button
-                    as={"a"}
-                    fontSize={"sm"}
-                    fontWeight={600}
-                    color={"white"}
-                    bg={"teal.400"}
-                    href={"#"}
-                    _hover={{ bg: "teal.300" }}
-                    leftIcon={<AddIcon />}
-                    display={{ base: "none", md: "inline-flex" }}
-                >
-                    Nuevo Post
-                </Button>
+
+
                 <IconButton
                     size={"md"}
                     icon={<BellIcon />}
