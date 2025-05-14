@@ -16,19 +16,18 @@ export const BlogPostHeader = ({ imageUrl, title, link }) => {
         bottom="0"
         left="0"
         w="100%"
-        bgGradient="linear(to-t, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%)"
+        bg="rgba(0, 0, 0, 0.5)" // Fondo negro semitransparente
         p={4}
       >
-        <Link href={link} textDecoration="none" _hover={{ textDecoration: "none" }}>
+        
           <Heading
             color="white"
             fontSize="xl"
             fontFamily="body"
-            _hover={{ color: "teal.300" }}
           >
             {title}
           </Heading>
-        </Link>
+
       </Box>
     </Box>
   );

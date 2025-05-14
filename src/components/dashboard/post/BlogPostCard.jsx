@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Collapse, Divider, Text } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { CommentSection } from "./CommentSection";
@@ -6,39 +6,24 @@ import { BlogPostHeader } from "./BlogPostHeader";
 import { BlogPostActions } from "./BlogPostActions";
 import { BlogPostMeta } from "./BlogPostMeta";
 
-export const BlogPostCard = () => {
+export const BlogPostCard = ({ post }) => {
   const { isOpen: isCommentsOpen, onToggle: onToggleComments } = useDisclosure();
-  const [commentText, setCommentText] = React.useState(""); // Usamos React.useState aquí
-  const [showAllComments, setShowAllComments] = React.useState(false); // Usamos React.useState aquí
-  const [isLiked, setIsLiked] = React.useState(false); // Usamos React.useState aquí
-  const [isSaved, setIsSaved] = React.useState(false); // Usamos React.useState aquí
-  const [likedComments, setLikedComments] = React.useState([]); // Usamos React.useState aquí
-  const [comments, setComments] = React.useState([ // Datos de ejemplo de comentarios
-    {
-      id: "comentario-1",
-      text: "¡Excelente artículo de ejemplo! Muy bien explicado.",
-      author: { name: "Usuario Ejemplo 1", image: "https://via.placeholder.com/50" },
-      createdAt: new Date(Date.now() - 86400000).toISOString(), // Ayer
-      likes: 2,
-    },
-    {
-      id: "comentario-2",
-      text: "¿Dónde puedo encontrar más posts de ejemplo como este?",
-      author: { name: "Usuario Ejemplo 2", image: "https://via.placeholder.com/50" },
-      createdAt: new Date().toISOString(), // Hoy
-      likes: 0,
-    },
-  ]);
+  const [commentText, setCommentText] = useState("");
+  const [showAllComments, setShowAllComments] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const [likedComments, setLikedComments] = useState([]);
 
-  const samplePost = { // Datos de ejemplo del post
-    imageUrl: "https://via.placeholder.com/800x400",
-    title: "Título de Ejemplo del Post",
-    link: "/ejemplo-post",
-    author: "Autor Ejemplo",
-    authorImage: "https://via.placeholder.com/50",
-    date: "Mayo 11, 2025",
-    excerpt: "Este es un breve extracto del contenido del post de ejemplo para mostrar cómo se vería en la tarjeta.",
-  };
+  const mappedComments = post?.comments?.map((comment) => ({
+    id: comment._id || `comment-${Date.now()}-${Math.random()}`,
+    text: comment.description,
+    author: {
+      name: comment.user?.username || "Anónimo",
+      image: "https://via.placeholder.com/50",
+    },
+    createdAt: comment.createdAt,
+    likes: 0,
+  })) || [];
 
   const handleAddComment = () => {
     if (commentText.trim() === "") return;
@@ -52,38 +37,33 @@ export const BlogPostCard = () => {
       createdAt: new Date().toISOString(),
       likes: 0,
     };
-    setComments([...comments, newComment]);
+    console.log("Nuevo comentario:", newComment);
     setCommentText("");
   };
 
   const handleLikePost = () => {
     setIsLiked(!isLiked);
+    console.log("Me gusta:", !isLiked, post?._id);
   };
 
   const handleSavePost = () => {
     setIsSaved(!isSaved);
+    console.log("Guardar:", !isSaved, post?._id);
   };
 
   const handleLikeComment = (commentId) => {
     if (likedComments.includes(commentId)) {
       setLikedComments(likedComments.filter((id) => id !== commentId));
-      const updatedComments = comments.map((c) =>
-        c.id === commentId ? { ...c, likes: (c.likes || 1) - 1 } : c
-      );
-      setComments(updatedComments);
+      console.log("Quitar me gusta del comentario:", commentId);
     } else {
       setLikedComments([...likedComments, commentId]);
-      const updatedComments = comments.map((c) =>
-        c.id === commentId ? { ...c, likes: (c.likes || 0) + 1 } : c
-      );
-      setComments(updatedComments);
+      console.log("Me gusta del comentario:", commentId);
     }
   };
 
   return (
-    
     <Box
-      maxW="md"
+      maxW="xl"
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
@@ -91,39 +71,32 @@ export const BlogPostCard = () => {
       mb={6}
       bg="white"
     >
-      {/* Encabezado del post */}
       <BlogPostHeader
-        imageUrl={samplePost.imageUrl}
-        title={samplePost.title}
-        link={samplePost.link}
+        imageUrl="https://via.placeholder.com/800x400"
+        title={post?.title}
+        link={`/posts/${post?._id}`}
       />
-
-      {/* Cuerpo del post */}
       <Box p={6}>
         <BlogPostMeta
-          authorName={samplePost.author}
-          authorImage={samplePost.authorImage}
-          date={samplePost.date}
+          authorName={post?.user}
+          authorImage="https://via.placeholder.com/50"
+          date={post?.createdAt ? new Date(post.createdAt).toLocaleDateString() : "Fecha no disponible"}
         />
         <Text color="gray.700" noOfLines={4} mb={5}>
-          {samplePost.excerpt}
+          {post?.description}
         </Text>
-
-        {/* Acciones */}
         <BlogPostActions
           isLiked={isLiked}
           isSaved={isSaved}
           onToggleComments={onToggleComments}
-          commentCount={comments.length}
+          commentCount={mappedComments.length}
           onLike={handleLikePost}
           onSave={handleSavePost}
         />
-
-        {/* Sección de comentarios */}
         <Collapse in={isCommentsOpen} animateOpacity>
           <Divider my={4} />
           <CommentSection
-            comments={comments}
+            comments={mappedComments}
             onAddComment={handleAddComment}
             commentText={commentText}
             setCommentText={setCommentText}
