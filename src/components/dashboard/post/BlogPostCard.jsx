@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Collapse, Divider, Text } from "@chakra-ui/react";
+import { Box, Collapse, Divider, Text, useToast } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { CommentSection } from "./CommentSection";
 import { BlogPostHeader } from "./BlogPostHeader";
@@ -8,38 +8,11 @@ import { BlogPostMeta } from "./BlogPostMeta";
 
 export const BlogPostCard = ({ post }) => {
   const { isOpen: isCommentsOpen, onToggle: onToggleComments } = useDisclosure();
-  const [commentText, setCommentText] = useState("");
+  const [comments, setComments] = useState(post?.comments || []);
   const [showAllComments, setShowAllComments] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [likedComments, setLikedComments] = useState([]);
-
-  const mappedComments = post?.comments?.map((comment) => ({
-    id: comment._id || `comment-${Date.now()}-${Math.random()}`,
-    text: comment.description,
-    author: {
-      name: comment.user?.username || "Anónimo",
-      image: "https://via.placeholder.com/50",
-    },
-    createdAt: comment.createdAt,
-    likes: 0,
-  })) || [];
-
-  const handleAddComment = () => {
-    if (commentText.trim() === "") return;
-    const newComment = {
-      id: `comment-${Date.now()}`,
-      text: commentText,
-      author: {
-        name: "Usuario Actual",
-        image: "https://avatars.dicebear.com/api/human/current-user.svg",
-      },
-      createdAt: new Date().toISOString(),
-      likes: 0,
-    };
-    console.log("Nuevo comentario:", newComment);
-    setCommentText("");
-  };
 
   const handleLikePost = () => {
     setIsLiked(!isLiked);
@@ -89,17 +62,16 @@ export const BlogPostCard = ({ post }) => {
           isLiked={isLiked}
           isSaved={isSaved}
           onToggleComments={onToggleComments}
-          commentCount={mappedComments.length}
+          commentCount={comments.length}
           onLike={handleLikePost}
           onSave={handleSavePost}
         />
         <Collapse in={isCommentsOpen} animateOpacity>
           <Divider my={4} />
           <CommentSection
-            comments={mappedComments}
-            onAddComment={handleAddComment}
-            commentText={commentText}
-            setCommentText={setCommentText}
+            postId={post?._id}
+            comments={comments}
+            setComments={setComments}
             showAllComments={showAllComments}
             setShowAllComments={setShowAllComments}
             onLikeComment={handleLikeComment}

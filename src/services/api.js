@@ -17,3 +17,16 @@ export const getPost = async () => {
         }
     }
 }
+
+export const addComments = async (id, data) => {
+    try {
+        return await apiClient.post(`/comments/${id}`, data)
+    } catch (e) {
+        const msg = error.response?.data?.msg || 'Error adding comments'
+        return{
+            error: true,
+            msg,
+            e
+        }
+    }
+}

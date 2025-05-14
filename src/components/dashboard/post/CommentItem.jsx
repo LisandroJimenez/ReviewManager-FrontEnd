@@ -18,21 +18,8 @@ export const CommentItem = ({ comment, onLikeComment, isCommentLiked }) => {
               {new Date(comment.createdAt).toLocaleDateString()}
             </Text>
           </Flex>
-          <Text fontSize="sm">{comment.text}</Text>
-          <Flex mt={2} fontSize="xs" color="gray.600">
-            <Button
-              variant="ghost"
-              size="xs"
-              leftIcon={<FaHeart />}
-              color={isCommentLiked ? "pink.500" : "gray.600"}
-              onClick={onLikeComment}
-            >
-              {isCommentLiked ? likesCount + 1 : likesCount} Me gusta
-            </Button>
-            <Button variant="ghost" size="xs">
-              Responder
-            </Button>
-          </Flex>
+          <Text fontSize="sm">{comment.description}</Text>
+
         </Box>
       </Flex>
     </Box>
