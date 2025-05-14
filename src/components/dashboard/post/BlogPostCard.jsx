@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Collapse, Divider, Text, useToast } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { CommentSection } from "./CommentSection";
@@ -7,12 +7,19 @@ import { BlogPostActions } from "./BlogPostActions";
 import { BlogPostMeta } from "./BlogPostMeta";
 
 export const BlogPostCard = ({ post }) => {
-  const { isOpen: isCommentsOpen, onToggle: onToggleComments } = useDisclosure();
+  const { isOpen: isCommentsOpen, onToggle: onToggleComments } =
+    useDisclosure();
   const [comments, setComments] = useState(post?.comments || []);
   const [showAllComments, setShowAllComments] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [likedComments, setLikedComments] = useState([]);
+
+  const toast = useToast();
+
+  useEffect(() => {
+    setComments(post?.comments || []);
+  }, [post?.comments]);
 
   const handleLikePost = () => {
     setIsLiked(!isLiked);
@@ -45,15 +52,18 @@ export const BlogPostCard = ({ post }) => {
       bg="white"
     >
       <BlogPostHeader
-        imageUrl="https://via.placeholder.com/800x400"
+        imageUrl={post.img}
         title={post?.title}
         link={`/posts/${post?._id}`}
       />
       <Box p={6}>
         <BlogPostMeta
           authorName={post?.user}
-          authorImage="https://via.placeholder.com/50"
-          date={post?.createdAt ? new Date(post.createdAt).toLocaleDateString() : "Fecha no disponible"}
+          date={
+            post?.createdAt
+              ? new Date(post.createdAt).toLocaleDateString()
+              : "Fecha no disponible"
+          }
         />
         <Text color="gray.700" noOfLines={4} mb={5}>
           {post?.description}

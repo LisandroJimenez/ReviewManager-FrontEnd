@@ -1,7 +1,7 @@
-import React, { useState } from "react"; // Importa useState si lo necesitas aquí
+import React, { useState } from "react"; 
 import { Button, Textarea, Box, Divider, Text, Flex, useToast } from "@chakra-ui/react";
 import { CommentItem } from "./CommentItem";
-import { useAddComment } from "../../../shared/hooks/useComments"; // Importa el hook
+import { useAddComment } from "../../../shared/hooks/useComments"; 
 
 export const CommentSection = ({
   postId,
@@ -14,18 +14,18 @@ export const CommentSection = ({
 }) => {
   const { isAddingComment, addPostComment } = useAddComment();
   const toast = useToast();
-  const [commentText, setCommentText] = useState(""); // Estado local para el input del comentario
+  const [commentText, setCommentText] = useState(""); 
   const displayedComments = showAllComments ? comments : comments.slice(0, 2);
   const remainingComments = comments.length - 2;
 
-  const handlePublishComment = async () => {
-    if (postId && commentText.trim()) {
+const handlePublishComment = async () => {
+    if (postId && commentText. trim()) {
       const newCommentData = await addPostComment(postId, commentText);
       if (newCommentData) {
-        setComments((prevComments) => [...prevComments, newCommentData]);
+        setComments((prevComments) => [newCommentData, ...prevComments]);
         setCommentText("");
         toast({
-          title: "Comentario publicado.",
+          title: "Comentario publicado.", 
           status: "success",
           duration: 3000,
           isClosable: true,
@@ -46,7 +46,7 @@ export const CommentSection = ({
         duration: 3000,
         isClosable: true,
       });
-    }
+    } 
   };
 
   return (

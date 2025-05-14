@@ -16,7 +16,7 @@ export const BlogPostHeader = ({ imageUrl, title, link }) => {
         bottom="0"
         left="0"
         w="100%"
-        bg="rgba(0, 0, 0, 0.5)" // Fondo negro semitransparente
+        bg="rgba(0, 0, 0, 0.5)" 
         p={4}
       >
         

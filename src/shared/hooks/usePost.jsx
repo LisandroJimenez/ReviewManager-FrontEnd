@@ -20,8 +20,6 @@ export const usePost = () => {
         },
       });
     }
-
-    // 🔧 Esta línea es clave
     setPosts(result.data.publications || []);
   };
 
