@@ -1,14 +1,63 @@
 import React from "react";
-import { Avatar, Stack, Text, HStack } from "@chakra-ui/react";
+import { 
+  Avatar, 
+  Stack, 
+  Text, 
+  HStack, 
+  Box, 
+  Flex, 
+  Icon, 
+  Tooltip
+} from "@chakra-ui/react";
+import { FaRegStar, FaShieldAlt, FaCheck } from "react-icons/fa";
 
-export const BlogPostMeta = ({ authorName, authorImage, date }) => {
+export const BlogPostMeta = ({ authorName, authorImage, date, category, isVerified = false }) => {
   return (
-    <HStack justifyContent="flex-start" alignItems="center" mb={4}>
-      <Avatar src={authorImage} size="xs" mr={2} />
-      <Stack direction="column" spacing={0} fontSize="sm">
-        <Text fontWeight={600}>{authorName}</Text>
-        <Text color="gray.600">{date}</Text>
-      </Stack>
-    </HStack>
+    <Flex 
+      justifyContent="space-between" 
+      alignItems="center" 
+      mb={4} 
+      flexWrap="wrap"
+      gap={2}
+    >
+      <HStack spacing={3}>
+        <Avatar 
+          src={authorImage} 
+          size="md" 
+          border="2px solid"
+          borderColor="teal.400"
+        />
+        <Stack direction="column" spacing={0}>
+
+          <HStack spacing={1} fontSize="xs" color="gray.500">
+            <Text>{date}</Text>
+            <Text>•</Text>
+            <Flex alignItems="center">
+              <Icon as={FaRegStar} mr={1} />
+              <Text>Contribuidor destacado</Text>
+            </Flex>
+          </HStack>
+        </Stack>
+      </HStack>
+      
+      {category && (
+        <Box
+          px={3}
+          py={1}
+          bg="teal.50"
+          borderRadius="full"
+          fontSize="sm"
+          fontWeight="semibold"
+          color="teal.700"
+          borderWidth="1px"
+          borderColor="teal.200"
+          _hover={{ bg: "teal.100" }}
+          cursor="pointer"
+          transition="all 0.2s"
+        >
+          {category}
+        </Box>
+      )}
+    </Flex>
   );
 };

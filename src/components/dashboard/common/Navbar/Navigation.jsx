@@ -3,7 +3,7 @@ import DesktopNav from "./DesktopNav";
 import { Stack, Flex } from "@chakra-ui/react";
 import Search from "./Search";
 
-export default function Navigation({ isMobile }) {
+export default function Navigation({onSelectCategory,  isMobile }) {
   return (
     <>
       {isMobile ? (

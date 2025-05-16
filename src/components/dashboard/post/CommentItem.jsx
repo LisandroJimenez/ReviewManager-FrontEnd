@@ -1,6 +1,5 @@
 import React from "react";
-import { Box, Avatar, Text, Button, Flex } from "@chakra-ui/react";
-import { FaHeart } from "react-icons/fa";
+import { Box, Avatar, Text, Flex } from "@chakra-ui/react";
 
 export const CommentItem = ({ comment, onLikeComment, isCommentLiked }) => {
   const likesCount = comment.likes || 0;
@@ -19,7 +18,6 @@ export const CommentItem = ({ comment, onLikeComment, isCommentLiked }) => {
             </Text>
           </Flex>
           <Text fontSize="sm">{comment.description}</Text>
-
         </Box>
       </Flex>
     </Box>

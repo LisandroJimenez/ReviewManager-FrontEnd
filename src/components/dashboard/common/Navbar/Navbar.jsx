@@ -1,11 +1,20 @@
-import React, { useState } from "react";
-import { Box, Flex, IconButton, Collapse, useDisclosure } from "@chakra-ui/react";
-import Logo from "./Logo";
-import Navigation from "./Navigation";
-import UserActions from "./UserActions";
+// Navbar.jsx
+import React from "react";
+import {
+  Box,
+  Flex,
+  IconButton,
+  Collapse,
+  useDisclosure,
+  Stack,
+  Link,
+} from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import Logo from "./Logo";
+import UserActions from "./UserActions";
+import DesktopNav from "./DesktopNav";
 
-export default function Navbar() {
+export default function Navbar({ onSelectCategory }) {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -27,22 +36,33 @@ export default function Navbar() {
             size="md"
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
             aria-label="Abrir navegación"
-            display={{ md: "none" }} // Mostrar solo en mobile
+            display={{ md: "none" }}
             onClick={onToggle}
             mr={2}
             variant="ghost"
           />
           <Logo />
         </Flex>
-        <Flex display={{ base: "none", md: "flex" }}>
-          <Navigation />
+
+        <Flex display={{ base: "none", md: "flex" }} ml={10}>
+          <DesktopNav onSelectCategory={onSelectCategory} isMobile={false} />
         </Flex>
+
         <UserActions />
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>
-        <Box bg="white" borderBottom="1px solid" borderColor="gray.200" p={4} display={{ md: 'none' }}>
-          <Navigation isMobile={true} /> {/* Renderizar una versión vertical de la navegación */}
+        <Box
+          bg="white"
+          borderBottom="1px solid"
+          borderColor="gray.200"
+          p={4}
+          display={{ md: "none" }}
+        >
+          <Stack spacing={4}>
+            <DesktopNav onSelectCategory={onSelectCategory} isMobile={true} /> 
+
+          </Stack>
         </Box>
       </Collapse>
     </Box>
