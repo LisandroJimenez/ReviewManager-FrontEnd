@@ -3,17 +3,20 @@ import toast from "react-hot-toast";
 import {
   addComments as addCommentRequest,
   editComments as editCommentRequest,
-  deleteComments as deleteCommentRequest, // Importa la función para eliminar el comentario
+  deleteComments as deleteCommentRequest,
 } from "../../services";
 
 export const useAddComment = () => {
   const [isAddingComment, setIsAddingComment] = useState(false);
   const [isEditingComment, setIsEditingComment] = useState(false);
-  const [isDeletingComment, setIsDeletingComment] = useState(false); // Nuevo estado para eliminar
+  const [isDeletingComment, setIsDeletingComment] = useState(false); 
 
-  const addPostComment = async (postId, commentDescription) => {
+  const addPostComment = async (postId, commentDescription, user) => {
     setIsAddingComment(true);
-    const result = await addCommentRequest(postId, { description: commentDescription });
+    const result = await addCommentRequest(postId, {
+      description: commentDescription,
+      user,
+    });
     setIsAddingComment(false);
 
     if (result?.error) {
@@ -31,9 +34,12 @@ export const useAddComment = () => {
     return result.data.comment;
   };
 
-  const editPostComment = async (commentId, newCommentDescription) => {
+  const editPostComment = async (commentId, newCommentDescription, newUser) => {
     setIsEditingComment(true);
-    const result = await editCommentRequest(commentId, { description: newCommentDescription });
+    const result = await editCommentRequest(commentId, {
+      description: newCommentDescription,
+      user: newUser, 
+    });
     setIsEditingComment(false);
 
     if (result?.error) {
@@ -50,6 +56,7 @@ export const useAddComment = () => {
     toast.success("Comentario editado exitosamente.");
     return result.data.comment;
   };
+
 
   const deletePostComment = async (commentId) => {
     setIsDeletingComment(true);
@@ -68,7 +75,7 @@ export const useAddComment = () => {
     }
 
     toast.success("Comentario eliminado exitosamente.");
-    return true; 
+    return true;
   };
 
   return {

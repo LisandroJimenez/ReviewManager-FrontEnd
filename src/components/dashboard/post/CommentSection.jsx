@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import {
   Box,
   Button,
@@ -8,6 +8,7 @@ import {
   IconButton,
   Textarea,
   useToast,
+  Input
 } from "@chakra-ui/react";
 import { FiEdit2, FiTrash2, FiCheck, FiX } from "react-icons/fi";
 import { CommentItem } from "./CommentItem";
@@ -32,9 +33,11 @@ export const CommentSection = ({
   } = useAddComment();
 
   const toast = useToast();
+  const [user, setUser] = useState("");
   const [commentText, setCommentText] = useState("");
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editingText, setEditingText] = useState("");
+  const [editingUser, setEditingUser] = useState("")
 
   const displayedComments = showAllComments ? comments : comments.slice(0, 2);
   const remainingComments = comments.length - 2;
@@ -43,10 +46,11 @@ export const CommentSection = ({
 
   const handlePublishComment = async () => {
     if (postId && commentText.trim()) {
-      const newComment = await addPostComment(postId, commentText);
+      const newComment = await addPostComment(postId, commentText, user);
       if (newComment) {
         setComments((prev) => [newComment, ...prev]);
         setCommentText("");
+        setUser("");
         setShowAllComments(true)
         toast({
           title: "Comentario publicado.",
@@ -68,6 +72,7 @@ export const CommentSection = ({
   const startEditing = (comment) => {
     setEditingCommentId(comment._id);
     setEditingText(comment.description);
+    setEditingUser(comment.user)
   };
 
   const handleDeleteComment = async (commentId) => {
@@ -80,11 +85,12 @@ export const CommentSection = ({
   const cancelEditing = () => {
     setEditingCommentId(null);
     setEditingText("");
+    setEditingUser("");
   };
 
   const handleEditComment = async () => {
     if (editingText.trim()) {
-      const updatedComment = await editPostComment(editingCommentId, editingText);
+      const updatedComment = await editPostComment(editingCommentId, editingText, editingUser);
       if (updatedComment) {
         setComments((prev) =>
           prev.map((c) => (c._id === editingCommentId ? updatedComment : c))
@@ -103,7 +109,14 @@ export const CommentSection = ({
 
   return (
     <Box mt={4}>
-      {/* Formulario para agregar comentario */}
+      <Input
+        placeholder="Tu nombre"
+        size="md"
+        value={user}
+        onChange={(e) => setUser(e.target.value)}
+        mb={3}
+      />
+
       <Textarea
         placeholder="Escribe un comentario..."
         size="md"
@@ -126,7 +139,6 @@ export const CommentSection = ({
 
       <Divider my={4} />
 
-      {/* Lista de comentarios */}
       {displayedComments.map((comment) => (
         <Box
           key={comment._id || `temp-${Math.random()}`}
@@ -137,6 +149,14 @@ export const CommentSection = ({
         >
           {editingCommentId === comment._id ? (
             <>
+              <Input
+                placeholder="Tu nombre"
+                size="sm"
+                value={editingUser}
+                onChange={(e) => setEditingUser(e.target.value)}
+                mb={2}
+              />
+
               <Textarea
                 value={editingText}
                 onChange={(e) => setEditingText(e.target.value)}

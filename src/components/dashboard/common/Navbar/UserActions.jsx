@@ -1,26 +1,29 @@
-import React from "react";
-import { Stack, Button, IconButton, Menu, MenuButton, MenuList, MenuItem, MenuDivider } from "@chakra-ui/react";
+// UserActions.jsx
+import {
+  HStack,
+} from "@chakra-ui/react";
 import Search from "./Search";
-import { BellIcon, AddIcon } from "@chakra-ui/icons";
+import { useState } from "react";
 
-export default function UserActions({ isLoggedIn, setIsLoggedIn }) {
-    return (
-        <Stack flex={{ base: 1, md: 2 }} justify={"flex-end"} direction={"row"} spacing={6} align="center">
-            <Search display={{ base: "none", md: "flex" }} /> {/* Ocultar en mobile */}
+export default function UserActions({ onSearch }) {
+  const handleSearchClick = () => {
+    onSearch(searchText);
+  };
 
+  const handleSearchChange = (newSearchText) => {
 
-            <>
+    setSearchText(newSearchText);
+  };
 
+  const [searchText, setSearchText] = useState("");
 
-                <IconButton
-                    size={"md"}
-                    icon={<BellIcon />}
-                    aria-label={"Notificaciones"}
-                    variant="ghost"
-                    display={{ base: "none", md: "inline-flex" }}
-                />
-            </>
-
-        </Stack>
-    );
+  return (
+    <HStack spacing={3} alignItems="center">
+      <Search
+        searchText={searchText}
+        onSearchChange={handleSearchChange}
+        onSearchClick={handleSearchClick}
+      />
+    </HStack>
+  );
 }

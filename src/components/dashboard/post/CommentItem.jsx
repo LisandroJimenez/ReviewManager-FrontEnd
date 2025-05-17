@@ -11,12 +11,13 @@ export const CommentItem = ({ comment, onLikeComment, isCommentLiked }) => {
         <Box flex="1">
           <Flex justifyContent="space-between" alignItems="center" mb={1}>
             <Text fontWeight="bold" fontSize="sm">
-              {comment.author?.name || "Anónimo"}
+              {comment.user || "Anónimo"}
             </Text>
             <Text fontSize="xs" color="gray.600">
               {new Date(comment.createdAt).toLocaleDateString()}
             </Text>
           </Flex>
+
           <Text fontSize="sm">{comment.description}</Text>
         </Box>
       </Flex>

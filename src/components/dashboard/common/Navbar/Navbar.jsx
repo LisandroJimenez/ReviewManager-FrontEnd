@@ -7,14 +7,17 @@ import {
   Collapse,
   useDisclosure,
   Stack,
+  // eslint-disable-next-line no-unused-vars
   Link,
+  HStack
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import Logo from "./Logo";
 import UserActions from "./UserActions";
 import DesktopNav from "./DesktopNav";
+// import Search from "./Search"; // Ya no es necesario importarlo aquí
 
-export default function Navbar({ onSelectCategory }) {
+export default function Navbar({ onSelectCategory, onSearch }) {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -48,7 +51,8 @@ export default function Navbar({ onSelectCategory }) {
           <DesktopNav onSelectCategory={onSelectCategory} isMobile={false} />
         </Flex>
 
-        <UserActions />
+        {/* Pasamos la función onSearch al componente UserActions */}
+        <UserActions onSearch={onSearch} />
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>
@@ -60,8 +64,7 @@ export default function Navbar({ onSelectCategory }) {
           display={{ md: "none" }}
         >
           <Stack spacing={4}>
-            <DesktopNav onSelectCategory={onSelectCategory} isMobile={true} /> 
-
+            <DesktopNav onSelectCategory={onSelectCategory} isMobile={true} />
           </Stack>
         </Box>
       </Collapse>

@@ -1,32 +1,47 @@
+// Search.jsx
 import React from "react";
 import {
-  Stack,
+  Box,
   IconButton,
   InputGroup,
   Input,
   InputRightElement,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { SearchIcon } from "@chakra-ui/icons";
+import { Search as SearchIcon } from "lucide-react";
 
-export default function Search() {
+export default function Search({ searchText, onSearchChange, onSearchClick }) {
   return (
-    <Stack flex={{ base: 1, md: 2 }} justify={"flex-end"} direction={"row"} spacing={6}>
-      <InputGroup w={{ base: "60%", md: "40%" }} mx={2} display={{ base: "none", md: "flex" }}>
+    <Box w="100%" mb={2}>
+      <InputGroup size="md">
         <Input
+          value={searchText}
+          onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Buscar posts..."
           borderRadius="full"
           bg={useColorModeValue("gray.100", "gray.700")}
+          border="none"
+          _focus={{
+            boxShadow: "outline",
+            bg: "white",
+            borderColor: "teal.300"
+          }}
+          _hover={{
+            bg: "gray.50"
+          }}
         />
         <InputRightElement>
           <IconButton
-            icon={<SearchIcon />}
+            icon={<SearchIcon size={18} />}
             variant="ghost"
+            colorScheme="teal"
             aria-label="Buscar"
             borderRadius="full"
+            size="sm"
+            onClick={onSearchClick}
           />
         </InputRightElement>
       </InputGroup>
-    </Stack>
+    </Box>
   );
 }
