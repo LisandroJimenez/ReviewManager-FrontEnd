@@ -8,19 +8,17 @@ import { BlogPostCard } from "../components/dashboard/post/BlogPostCard";
 import { usePost } from "../shared/hooks/usePost";
 import HeroBanner from "../components/dashboard/landing/HeroBanner";
 import StatsSection from "../components/dashboard/landing/StatsSections";
-import { useCategories } from "../shared/hooks/useCategories";  // <-- importás el hook
+import { useCategories } from "../shared/hooks/useCategories"; 
 
 const LandingPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [appliedSearch, setAppliedSearch] = useState("");
 
-  // Usás el hook que carga categorías automáticamente
   const { categories } = useCategories();
   const categoryName = categories.find(cat => cat._id === selectedCategory)?.name || selectedCategory;
 
   const { posts, isFetching, getPosts } = usePost(selectedCategory, appliedSearch);
 
-  // Obtener posts cuando cambia la categoría o la búsqueda
   useEffect(() => {
     getPosts();
   }, [selectedCategory, appliedSearch]);

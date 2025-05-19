@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -8,11 +8,12 @@ import {
   IconButton,
   Textarea,
   useToast,
-  Input
+  Input,
 } from "@chakra-ui/react";
 import { FiEdit2, FiTrash2, FiCheck, FiX } from "react-icons/fi";
 import { CommentItem } from "./CommentItem";
 import { useAddComment } from "../../../shared/hooks/useComments";
+import { validateCommentInput } from "../../../shared/validators/commentValidator";
 
 export const CommentSection = ({
   postId,
@@ -37,21 +38,31 @@ export const CommentSection = ({
   const [commentText, setCommentText] = useState("");
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editingText, setEditingText] = useState("");
-  const [editingUser, setEditingUser] = useState("")
+  const [editingUser, setEditingUser] = useState("");
 
   const displayedComments = showAllComments ? comments : comments.slice(0, 2);
   const remainingComments = comments.length - 2;
 
-
-
   const handlePublishComment = async () => {
-    if (postId && commentText.trim()) {
+    const validationErrors = validateCommentInput({ user, description: commentText });
+    if (Object.keys(validationErrors).length > 0) {
+      const firstError = validationErrors.user || validationErrors.description;
+      toast({
+        title: firstError,
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    if (postId) {
       const newComment = await addPostComment(postId, commentText, user);
       if (newComment) {
         setComments((prev) => [newComment, ...prev]);
         setCommentText("");
         setUser("");
-        setShowAllComments(true)
+        setShowAllComments(true);
         toast({
           title: "Comentario publicado.",
           status: "success",
@@ -59,20 +70,13 @@ export const CommentSection = ({
           isClosable: true,
         });
       }
-    } else {
-      toast({
-        title: "Por favor, escribe un comentario.",
-        status: "warning",
-        duration: 3000,
-        isClosable: true,
-      });
     }
   };
 
   const startEditing = (comment) => {
     setEditingCommentId(comment._id);
     setEditingText(comment.description);
-    setEditingUser(comment.user)
+    setEditingUser(comment.user);
   };
 
   const handleDeleteComment = async (commentId) => {
@@ -89,21 +93,24 @@ export const CommentSection = ({
   };
 
   const handleEditComment = async () => {
-    if (editingText.trim()) {
-      const updatedComment = await editPostComment(editingCommentId, editingText, editingUser);
-      if (updatedComment) {
-        setComments((prev) =>
-          prev.map((c) => (c._id === editingCommentId ? updatedComment : c))
-        );
-        cancelEditing();
-      }
-    } else {
+    const validationErrors = validateCommentInput({ user: editingUser, description: editingText });
+    if (Object.keys(validationErrors).length > 0) {
+      const firstError = validationErrors.user || validationErrors.description;
       toast({
-        title: "El comentario no puede estar vacío.",
+        title: firstError,
         status: "warning",
         duration: 3000,
         isClosable: true,
       });
+      return;
+    }
+
+    const updatedComment = await editPostComment(editingCommentId, editingText, editingUser);
+    if (updatedComment) {
+      setComments((prev) =>
+        prev.map((c) => (c._id === editingCommentId ? updatedComment : c))
+      );
+      cancelEditing();
     }
   };
 

@@ -12,10 +12,7 @@ import {
 import { 
   FaHeart, 
   FaRegHeart, 
-  FaComment, 
-  FaShareAlt, 
-  FaBookmark,
-  FaRegBookmark 
+  FaComment
 } from "react-icons/fa";
 
 export const BlogPostActions = ({

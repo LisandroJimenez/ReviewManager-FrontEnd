@@ -24,15 +24,10 @@ export default function DesktopNav({ onSelectCategory, isMobile = false }) {
 
   const handleSelectAllCategories = () => {
     if (onSelectCategory) {
-      onSelectCategory(null); // Pasar null o undefined para indicar "todas las categorías"
+      onSelectCategory(null); 
     }
   };
 
-  // Función para obtener el color para cada categoría
-  const getCategoryColor = (index) => {
-    const colors = ["teal", "blue", "purple", "orange", "pink", "cyan", "green"];
-    return colors[index % colors.length];
-  };
 
   const getNavIcon = (label) => {
     switch (label) {
@@ -108,14 +103,7 @@ export default function DesktopNav({ onSelectCategory, isMobile = false }) {
                           href="#"
                           onClick={() => onSelectCategory(cat._id)}
                         />
-                        <Tag 
-                          size="sm" 
-                          colorScheme={getCategoryColor(index)}
-                          ml={2} 
-                          rounded="full"
-                        >
-                          {Math.floor(Math.random() * 30) + 1}
-                        </Tag>
+
                       </HStack>
                     ))}
                   </Stack>

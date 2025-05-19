@@ -68,9 +68,6 @@ export const BlogPostCard = ({ post }) => {
     }
   };
 
-  // Datos de ejemplo para mejorar la interfaz
-  const readingTime = Math.ceil((post?.description?.length || 0) / 800); // ~200 palabras por minuto
-  const views = Math.floor(Math.random() * 100) + 10; // Para ejemplo
   const createdDate = post?.createdAt
     ? new Date(post.createdAt).toLocaleDateString()
     : "Fecha no disponible";
@@ -81,7 +78,7 @@ export const BlogPostCard = ({ post }) => {
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
-      boxShadow="lg" // Sombra más pronunciada
+      boxShadow="lg" 
       mb={6}
       bg="white"
       transition="transform 0.3s ease, box-shadow 0.3s ease"
@@ -104,18 +101,12 @@ export const BlogPostCard = ({ post }) => {
 
       <Box p={6}>
         <BlogPostMeta
-          authorName={post?.user}
+          authorName={post?.user || "Usuario Anónimo"}
           date={createdDate}
           category={post?.category}
         />
 
-        {/* Metaindicadores adicionales */}
         <Flex wrap="wrap" gap={3} mb={4}>
-          <Tag size="sm" borderRadius="full" variant="subtle" colorScheme="cyan">
-            <TagLeftIcon boxSize="12px" as={FaRegClock} />
-            <TagLabel>{readingTime} min lectura</TagLabel>
-          </Tag>
-
           <Tag size="sm" borderRadius="full" variant="subtle" colorScheme="orange">
             <TagLeftIcon boxSize="12px" as={FaRegCalendarAlt} />
             <TagLabel>{createdDate}</TagLabel>

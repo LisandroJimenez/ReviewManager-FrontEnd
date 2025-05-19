@@ -1,5 +1,3 @@
-
-// DesktopSubNav.jsx
 import React from "react";
 import { Link, Stack, Box, Text, Icon, Flex } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";

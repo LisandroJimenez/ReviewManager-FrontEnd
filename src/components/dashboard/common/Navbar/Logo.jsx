@@ -1,4 +1,3 @@
-// Logo.jsx
 import React from "react";
 import { Text, Icon, HStack, useColorModeValue } from "@chakra-ui/react";
 import { MessageSquare } from "lucide-react";

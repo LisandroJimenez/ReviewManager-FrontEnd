@@ -1,4 +1,3 @@
-// Navbar.jsx
 import React from "react";
 import {
   Box,
@@ -7,7 +6,6 @@ import {
   Collapse,
   useDisclosure,
   Stack,
-  // eslint-disable-next-line no-unused-vars
   Link,
   HStack
 } from "@chakra-ui/react";
@@ -15,7 +13,6 @@ import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import Logo from "./Logo";
 import UserActions from "./UserActions";
 import DesktopNav from "./DesktopNav";
-// import Search from "./Search"; // Ya no es necesario importarlo aquí
 
 export default function Navbar({ onSelectCategory, onSearch }) {
   const { isOpen, onToggle } = useDisclosure();
@@ -51,7 +48,6 @@ export default function Navbar({ onSelectCategory, onSearch }) {
           <DesktopNav onSelectCategory={onSelectCategory} isMobile={false} />
         </Flex>
 
-        {/* Pasamos la función onSearch al componente UserActions */}
         <UserActions onSearch={onSearch} />
       </Flex>
 

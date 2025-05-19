@@ -16,26 +16,22 @@ const HeroBanner = ({ selectedCategory, categories }) => {
       };
     }
 
-    // Busca la categoría por su _id en la lista de categorías
     const foundCategory = categories.find(cat => cat._id === selectedCategory);
-    const categoryName = foundCategory ? foundCategory.name : selectedCategory; // Usa el nombre si se encuentra, sino usa la ID
+    const categoryName = foundCategory ? foundCategory.name : selectedCategory; 
 
     const categoryTexts = {
-      // Ya no es necesario este mapeo estático, usaremos el nombre dinámico
       default: {
         title: `Explorando ${categoryName}`,
         subtitle: "Contenido seleccionado especialmente para ti"
       }
     };
 
-    // Si encontramos la categoría, usamos su nombre para el título
     if (foundCategory) {
       return {
         title: `Explorando ${foundCategory.name}`,
         subtitle: "Contenido seleccionado especialmente para ti"
       };
     } else {
-      // Si no se encuentra (por alguna razón), mostramos la ID
       return categoryTexts.default;
     }
   };

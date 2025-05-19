@@ -7,10 +7,10 @@ const StatsSection = ({ postsCount }) => {
   return (
     <Grid
       templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(4, 1fr)" }}
-      gap={4}
+      gap={9}
       w="100%"
       maxW="1000px"
-      mb={8}
+      mb={9}
     >
       <StatBox icon={<TrendingUp />} label="Publicaciones" value={postsCount} />
       <StatBox icon={<Clock />} label="Tiempo Promedio" value="5 min" />

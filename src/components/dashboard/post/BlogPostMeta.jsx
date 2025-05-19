@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { FaRegStar, FaShieldAlt, FaCheck } from "react-icons/fa";
 
-export const BlogPostMeta = ({ authorName, authorImage, date, category, isVerified = false }) => {
+export const BlogPostMeta = ({ authorImage, date, category }) => {
   return (
     <Flex 
       justifyContent="space-between" 
@@ -30,12 +30,7 @@ export const BlogPostMeta = ({ authorName, authorImage, date, category, isVerifi
         <Stack direction="column" spacing={0}>
 
           <HStack spacing={1} fontSize="xs" color="gray.500">
-            <Text>{date}</Text>
-            <Text>•</Text>
-            <Flex alignItems="center">
-              <Icon as={FaRegStar} mr={1} />
-              <Text>Contribuidor destacado</Text>
-            </Flex>
+            <Text>Usuario Anónimo</Text>
           </HStack>
         </Stack>
       </HStack>
