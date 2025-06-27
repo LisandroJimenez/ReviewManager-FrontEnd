@@ -17,7 +17,7 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Home, Grid, Award } from "lucide-react";
 import DesktopSubNav from "./DesktopSubNav";
 import { useCategories } from "../../../../shared/hooks/useCategories";
-import { NAV_ITEMS } from "./navItems";
+import { NAV_ITEMS } from "./NavItems";
 import { useColorModeValue } from "@chakra-ui/react";
 
 
