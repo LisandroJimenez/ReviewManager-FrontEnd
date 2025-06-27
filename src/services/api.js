@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'http://127.0.0.1:3000/reviewManager/v1',
+    baseURL: 'https://reviewmanager-production.up.railway.app/reviewManager/v1',
     timeout: 5000
 })
 
