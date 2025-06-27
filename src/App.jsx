@@ -9,7 +9,7 @@ import theme from './theme';
 function App() {
   let element = useRoutes(routes)
   return (
-    <ChakraProvider theme={theme} >
+    <ChakraProvider  >
       <Suspense fallback={<Loading />}>
         {element}
       </Suspense>

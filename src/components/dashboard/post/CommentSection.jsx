@@ -14,6 +14,7 @@ import { FiEdit2, FiTrash2, FiCheck, FiX } from "react-icons/fi";
 import { CommentItem } from "./CommentItem";
 import { useAddComment } from "../../../shared/hooks/useComments";
 import { validateCommentInput } from "../../../shared/validators/commentValidator";
+import { useColorModeValue } from "@chakra-ui/react";
 
 export const CommentSection = ({
   postId,
@@ -32,6 +33,14 @@ export const CommentSection = ({
     isDeletingComment,
     deletePostComment,
   } = useAddComment();
+
+  // Theme colors
+  const textColor = useColorModeValue('gray.800', 'white');
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const inputBg = useColorModeValue('white', 'gray.700');
+  const commentBg = useColorModeValue('gray.50', 'gray.700');
+  const dividerColor = useColorModeValue('gray.200', 'gray.600');
 
   const toast = useToast();
   const [user, setUser] = useState("");
@@ -115,13 +124,21 @@ export const CommentSection = ({
   };
 
   return (
-    <Box mt={4}>
+    <Box mt={4} bg={bgColor} borderRadius="lg" p={4}>
       <Input
         placeholder="Tu nombre"
         size="md"
         value={user}
         onChange={(e) => setUser(e.target.value)}
         mb={3}
+        bg={inputBg}
+        borderColor={borderColor}
+        color={textColor}
+        _hover={{ borderColor: useColorModeValue('gray.300', 'gray.500') }}
+        _focus={{ 
+          borderColor: useColorModeValue('blue.500', 'blue.300'),
+          boxShadow: `0 0 0 1px ${useColorModeValue('#3182ce', '#63b3ed')}`
+        }}
       />
 
       <Textarea
@@ -131,6 +148,14 @@ export const CommentSection = ({
         onChange={(e) => setCommentText(e.target.value)}
         mb={3}
         resize="vertical"
+        bg={inputBg}
+        borderColor={borderColor}
+        color={textColor}
+        _hover={{ borderColor: useColorModeValue('gray.300', 'gray.500') }}
+        _focus={{ 
+          borderColor: useColorModeValue('blue.500', 'blue.300'),
+          boxShadow: `0 0 0 1px ${useColorModeValue('#3182ce', '#63b3ed')}`
+        }}
       />
       <Flex justify="flex-end">
         <Button
@@ -139,20 +164,28 @@ export const CommentSection = ({
           onClick={handlePublishComment}
           isLoading={isAddingComment}
           isDisabled={!commentText.trim()}
+          borderRadius="full"
         >
           Comentar
         </Button>
       </Flex>
 
-      <Divider my={4} />
+      <Divider my={4} borderColor={dividerColor} />
 
       {displayedComments.map((comment) => (
         <Box
           key={comment._id || `temp-${Math.random()}`}
           mb={3}
-          p={2}
+          p={4}
           borderWidth="1px"
-          borderRadius="md"
+          borderRadius="lg"
+          borderColor={borderColor}
+          bg={commentBg}
+          transition="all 0.2s ease"
+          _hover={{ 
+            transform: 'translateY(-1px)',
+            boxShadow: useColorModeValue('0 2px 8px rgba(0,0,0,0.1)', '0 2px 8px rgba(0,0,0,0.3)')
+          }}
         >
           {editingCommentId === comment._id ? (
             <>
@@ -162,6 +195,9 @@ export const CommentSection = ({
                 value={editingUser}
                 onChange={(e) => setEditingUser(e.target.value)}
                 mb={2}
+                bg={inputBg}
+                borderColor={borderColor}
+                color={textColor}
               />
 
               <Textarea
@@ -169,6 +205,9 @@ export const CommentSection = ({
                 onChange={(e) => setEditingText(e.target.value)}
                 size="sm"
                 mb={2}
+                bg={inputBg}
+                borderColor={borderColor}
+                color={textColor}
               />
               <HStack spacing={2}>
                 <Button
@@ -177,14 +216,16 @@ export const CommentSection = ({
                   leftIcon={<FiCheck />}
                   onClick={handleEditComment}
                   isLoading={isEditingComment}
+                  borderRadius="full"
                 >
                   Guardar
                 </Button>
                 <Button
                   size="sm"
-                  colorScheme="red"
+                  variant="outline"
                   leftIcon={<FiX />}
                   onClick={cancelEditing}
+                  borderRadius="full"
                 >
                   Cancelar
                 </Button>
@@ -202,14 +243,26 @@ export const CommentSection = ({
                   aria-label="Editar comentario"
                   icon={<FiEdit2 />}
                   size="sm"
+                  variant="ghost"
                   onClick={() => startEditing(comment)}
+                  borderRadius="full"
+                  _hover={{ 
+                    bg: useColorModeValue('gray.100', 'gray.600'),
+                    transform: 'scale(1.05)'
+                  }}
                 />
                 <IconButton
                   aria-label="Borrar comentario"
                   icon={<FiTrash2 />}
                   size="sm"
+                  variant="ghost"
                   colorScheme="red"
                   onClick={() => handleDeleteComment(comment._id)}
+                  borderRadius="full"
+                  _hover={{ 
+                    bg: useColorModeValue('red.50', 'red.900'),
+                    transform: 'scale(1.05)'
+                  }}
                 />
               </Flex>
             </>
@@ -224,6 +277,12 @@ export const CommentSection = ({
           width="full"
           mt={2}
           onClick={() => setShowAllComments(!showAllComments)}
+          borderRadius="full"
+          color={useColorModeValue('blue.600', 'blue.300')}
+          _hover={{ 
+            bg: useColorModeValue('blue.50', 'blue.900'),
+            transform: 'translateY(-1px)'
+          }}
         >
           {showAllComments
             ? "Mostrar menos comentarios"

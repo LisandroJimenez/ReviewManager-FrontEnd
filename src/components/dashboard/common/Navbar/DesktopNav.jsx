@@ -18,38 +18,46 @@ import { Home, Grid, Award } from "lucide-react";
 import DesktopSubNav from "./DesktopSubNav";
 import { useCategories } from "../../../../shared/hooks/useCategories";
 import { NAV_ITEMS } from "./navItems";
+import { useColorModeValue } from "@chakra-ui/react";
+
 
 export default function DesktopNav({ onSelectCategory, isMobile = false }) {
   const { categories } = useCategories();
-
+  const textColor = useColorModeValue('gray.800', 'white');
+  const hoverBg = useColorModeValue("gray.100", "gray.700");
+  const hoverColor = useColorModeValue("teal.600", "teal.300");
+  const dividerColor = useColorModeValue("gray.100", "gray.700");
+  const subNavHoverBg = useColorModeValue("gray.50", "gray.700");
+  const subNavTextColor = useColorModeValue("gray.800", "gray.100");
+  const popoverBg = useColorModeValue("white", "gray.800");
   const handleSelectAllCategories = () => {
     if (onSelectCategory) {
-      onSelectCategory(null); 
+      onSelectCategory(null);
     }
   };
 
 
   const getNavIcon = (label) => {
     switch (label) {
-      case "Inicio": 
+      case "Inicio":
         return Home;
-      case "Categorías": 
+      case "Categorías":
         return Grid;
-      default: 
+      default:
         return Award;
     }
   };
 
   return (
-    <Stack 
-      direction={isMobile ? "column" : "row"} 
-      spacing={isMobile ? 2 : 6} 
+    <Stack
+      direction={isMobile ? "column" : "row"}
+      spacing={isMobile ? 2 : 6}
       align={isMobile ? "flex-start" : "center"}
       ml={isMobile ? 0 : 4}
     >
       {NAV_ITEMS.map((navItem) => {
         const NavIcon = getNavIcon(navItem.label);
-        
+
         if (navItem.label === "Categorías") {
           return (
             <Popover key={navItem.label} trigger="hover" placement="bottom-start">
@@ -59,14 +67,14 @@ export default function DesktopNav({ onSelectCategory, isMobile = false }) {
                   href="#"
                   fontSize="sm"
                   fontWeight={600}
-                  color="gray.700"
+                  color={textColor}
                   rounded="md"
                   display="flex"
                   alignItems="center"
-                  _hover={{ 
-                    textDecoration: "none", 
-                    bg: "gray.50",
-                    color: "teal.500"
+                  _hover={{
+                    textDecoration: "none",
+                    bg: hoverBg,
+                    color: hoverColor
                   }}
                 >
                   <HStack spacing={2}>
@@ -77,12 +85,12 @@ export default function DesktopNav({ onSelectCategory, isMobile = false }) {
                 </Link>
               </PopoverTrigger>
 
-              <PopoverContent 
-                border={0} 
-                boxShadow="xl" 
-                bg="white" 
-                p={4} 
-                rounded="xl" 
+              <PopoverContent
+                border={0}
+                boxShadow="xl"
+                bg={popoverBg}
+                p={4}
+                rounded="xl"
                 minW="sm"
               >
                 <Stack>
@@ -91,20 +99,25 @@ export default function DesktopNav({ onSelectCategory, isMobile = false }) {
                       label="Todas las categorías"
                       href="#"
                       onClick={handleSelectAllCategories}
+
                     />
                   </Box>
-                  
+
                   <Stack spacing={0}>
                     {categories.map((cat, index) => (
-                      <HStack key={cat._id}>
+                      <HStack
+                        key={cat._id}
+                        bg={useColorModeValue("white", "gray.800")}
+                        _hover={{ bg: subNavHoverBg }}
+                      >
                         <DesktopSubNav
                           label={cat.name}
                           subLabel={cat.description || ""}
                           href="#"
                           onClick={() => onSelectCategory(cat._id)}
                         />
-
                       </HStack>
+
                     ))}
                   </Stack>
                 </Stack>
@@ -120,14 +133,14 @@ export default function DesktopNav({ onSelectCategory, isMobile = false }) {
             href={navItem.href ?? "#"}
             fontSize="sm"
             fontWeight={600}
-            color="gray.700"
+            color={textColor}
             rounded="md"
             display="flex"
             alignItems="center"
-            _hover={{ 
-              textDecoration: "none", 
-              bg: "gray.50",
-              color: "teal.500" 
+            _hover={{
+              textDecoration: "none",
+              bg: hoverBg,
+              color: hoverColor
             }}
           >
             <HStack spacing={2}>
