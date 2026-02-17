@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'https://reviewmanager-production.up.railway.app/reviewManager/v1',
+    baseURL: 'https://reviewmanager-1.onrender.com/reviewManager/v1',
     timeout: 5000
 })
 
@@ -55,7 +55,7 @@ export const deleteComments = async (id) => {
     try {
         return await apiClient.delete(`/comments/${id}`)
     } catch (e) {
-        const msg = error.response?.data?.msg || "Error deleting comment"
+        const msg = e.response?.data?.msg || "Error deleting comment"
         return {
             error: true,
             msg,
@@ -64,7 +64,6 @@ export const deleteComments = async (id) => {
     }
 }
 
-// services.js
 export const getCategories = async () => {
     try {
         const response = await apiClient.get('/categories');
@@ -77,3 +76,16 @@ export const getCategories = async () => {
         }
     }
 };
+
+export const addPost = async (data) => {
+    try {
+        const response = await apiClient.post('/publications', data)
+        return response.data
+    } catch (e) {
+        return{
+            error: true,
+            msg: 'Error adding post',
+            e
+        }
+    }
+}
