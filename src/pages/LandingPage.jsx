@@ -11,6 +11,7 @@ import HeroBanner from "../components/dashboard/landing/HeroBanner";
 import StatsSection from "../components/dashboard/landing/StatsSections";
 import { useCategories } from "../shared/hooks/useCategories";
 import CreatePostModal from "../components/PostModal/CreatePostModal";
+
 const LandingPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [appliedSearch, setAppliedSearch] = useState("");
@@ -28,19 +29,24 @@ const LandingPage = () => {
 
   const handleCategorySelect = (category) => setSelectedCategory(category);
   const handleSearch = (searchTerm) => setAppliedSearch(searchTerm.trim());
+  const handlePostCreated = (newPost) => getPosts();
 
-  const handlePostCreated = (newPost) => {
-    getPosts(); 
-  };
+  const borderColor = useColorModeValue("gray.200", "gray.700");
+  const btnColor    = useColorModeValue("gray.700", "gray.200");
+  const btnHoverBg  = useColorModeValue("gray.100", "gray.700");
+  const btnHoverBorder = useColorModeValue("gray.400", "gray.500");
 
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.50", "gray.900")}>
+    // overflowX="hidden" en el contenedor raíz evita que cualquier
+    // hijo desborde horizontalmente en móvil
+    <Box minH="100vh" bg={useColorModeValue("gray.50", "gray.900")} overflowX="hidden">
       <BlogNavbar
         onSelectCategory={handleCategorySelect}
         onSearch={handleSearch}
       />
 
-      <Container maxW="container.xl" py={8}>
+      {/* px responsivo para que el contenido respete los márgenes en móvil */}
+      <Container maxW="container.xl" py={8} px={{ base: 4, md: 6, lg: 8 }}>
         <Flex direction="column" align="center">
           <HeroBanner selectedCategory={selectedCategory} categories={categories} />
 
@@ -49,24 +55,18 @@ const LandingPage = () => {
           <Flex w="100%" justify="flex-end" mb={4} mt={2}>
             <Button
               onClick={onOpen}
-              size="md"
-              borderRadius="xl"
-              bg="#6C63FF"
-              color="white"
-              fontWeight="700"
-              fontSize="sm"
-              letterSpacing="0.04em"
-              px={6}
-              leftIcon={<Text as="span" fontSize="lg">✏️</Text>}
+              size="sm"
+              variant="outline"
+              borderColor={borderColor}
+              color={btnColor}
+              fontWeight="500"
+              borderRadius="md"
               _hover={{
-                bg: "#5A52D5",
-                transform: "translateY(-2px)",
-                boxShadow: "0 8px 25px rgba(108,99,255,0.35)",
+                bg: btnHoverBg,
+                borderColor: btnHoverBorder,
               }}
-              _active={{ transform: "translateY(0)" }}
-              transition="all 0.2s"
             >
-              Nuevo post
+              + Nuevo post
             </Button>
           </Flex>
 
@@ -77,7 +77,9 @@ const LandingPage = () => {
           ) : (
             <>
               {posts.length > 0 ? (
-                <Box as="section" w="100%">
+                // w="100%" + minW={0} en section y grid previenen que
+                // el contenido empuje el layout más allá del viewport
+                <Box as="section" w="100%" minW={0}>
                   <Heading size="lg" mb={6} textAlign="center">
                     {selectedCategory
                       ? `Publicaciones de ${categoryName}`
@@ -85,17 +87,25 @@ const LandingPage = () => {
                         ? `Resultados de búsqueda para "${appliedSearch}"`
                         : "Publicaciones recientes"}
                   </Heading>
+
                   <Grid
-                    templateColumns={{ base: "1fr", md: "repeat(2, 1fr)", lg: "repeat(2, 1fr)" }}
+                    templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
                     gap={6}
+                    w="100%"
+                    minW={0}
                   >
                     {posts.map((post) => (
+                      // minW={0} en cada celda es clave: sin esto,
+                      // los items de grid no se comprimen por debajo
+                      // de su contenido mínimo, causando overflow
                       <Box
                         as={motion.div}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.4 }}
                         key={post._id}
+                        minW={0}
+                        w="100%"
                       >
                         <BlogPostCard post={post} />
                       </Box>
@@ -112,7 +122,6 @@ const LandingPage = () => {
         </Flex>
       </Container>
 
-      {/* ── Modal ── */}
       <CreatePostModal
         isOpen={isOpen}
         onClose={onClose}
