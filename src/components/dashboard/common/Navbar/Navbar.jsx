@@ -116,12 +116,7 @@ export default function Navbar({ onSelectCategory, onSearch }) {
               transition="all 0.2s ease"
             />
           </MotionBox>
-          <MotionBox
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <UserActions onSearch={onSearch} />
-          </MotionBox>
+
         </HStack>
       </MotionFlex>
 
