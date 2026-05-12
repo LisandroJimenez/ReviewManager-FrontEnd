@@ -37,16 +37,14 @@ const LandingPage = () => {
   const btnHoverBorder = useColorModeValue("gray.400", "gray.500");
 
   return (
-    // overflowX="hidden" en el contenedor raíz evita que cualquier
-    // hijo desborde horizontalmente en móvil
+
     <Box minH="100vh" bg={useColorModeValue("gray.50", "gray.900")} overflowX="hidden">
       <BlogNavbar
         onSelectCategory={handleCategorySelect}
         onSearch={handleSearch}
       />
 
-      {/* px responsivo para que el contenido respete los márgenes en móvil */}
-      <Container maxW="container.xl" py={8} px={{ base: 4, md: 6, lg: 8 }}>
+      <Container maxW="container.xl" pt="90px" pb={8} px={{ base: 4, md: 6, lg: 8 }}>
         <Flex direction="column" align="center">
           <HeroBanner selectedCategory={selectedCategory} categories={categories} />
 
@@ -77,8 +75,7 @@ const LandingPage = () => {
           ) : (
             <>
               {posts.length > 0 ? (
-                // w="100%" + minW={0} en section y grid previenen que
-                // el contenido empuje el layout más allá del viewport
+                
                 <Box as="section" w="100%" minW={0}>
                   <Heading size="lg" mb={6} textAlign="center">
                     {selectedCategory
@@ -95,9 +92,7 @@ const LandingPage = () => {
                     minW={0}
                   >
                     {posts.map((post) => (
-                      // minW={0} en cada celda es clave: sin esto,
-                      // los items de grid no se comprimen por debajo
-                      // de su contenido mínimo, causando overflow
+                      
                       <Box
                         as={motion.div}
                         initial={{ opacity: 0, y: 20 }}

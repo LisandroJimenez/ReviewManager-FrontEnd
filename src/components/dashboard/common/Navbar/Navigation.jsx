@@ -14,7 +14,7 @@ export default function Navigation({ isMobile }) {
       {isMobile ? (
         <Stack spacing={4}>
           <DesktopNav isMobile={true} />
-          
+
           <Search />
         </Stack>
       ) : (

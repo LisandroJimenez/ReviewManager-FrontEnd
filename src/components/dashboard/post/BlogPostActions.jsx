@@ -41,32 +41,7 @@ export const BlogPostActions = ({
         wrap="wrap"
       >
         <HStack spacing={4}>
-          <Tooltip label={isLiked ? "Quitar me gusta" : "Me gusta"}>
-            <Flex align="center">
-              <IconButton
-                aria-label="Me gusta"
-                variant="ghost"
-                colorScheme={isLiked ? "pink" : "gray"}
-                size="md"
-                icon={isLiked ? <FaHeart /> : <FaRegHeart />}
-                onClick={onLike}
-                mr={1}
-                borderRadius="full"
-                _hover={{ 
-                  transform: 'scale(1.1)',
-                  bg: isLiked ? 'pink.50' : buttonHoverBg
-                }}
-                transition="all 0.2s ease"
-              />
-              <Text 
-                fontSize="sm" 
-                fontWeight="medium" 
-                color={isLiked ? "pink.500" : textColor}
-              >
-                {likeCount + (isLiked ? 1 : 0)}
-              </Text>
-            </Flex>
-          </Tooltip>
+
           
           <Tooltip label="Comentarios">
             <Flex align="center">

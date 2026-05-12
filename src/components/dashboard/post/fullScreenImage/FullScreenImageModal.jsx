@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
 import { FaHeart, FaRegHeart, FaBookmark, FaRegBookmark, FaShare } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const FullScreenImageModal = ({ 
   imageUrl, 
@@ -30,18 +31,22 @@ const FullScreenImageModal = ({
     <Portal>
 
     <Box
+      as={motion.div}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       position="fixed"
       top="0"
       left="0"
       width="100vw"
       height="100vh"
-      backgroundColor="rgba(0, 0, 0, 0.85)"
+      backgroundColor="rgba(0, 0, 0, 0.9)"
       zIndex="9999"
       display="flex"
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      backdropFilter="blur(5px)"
+      backdropFilter="blur(15px)"
     >
       <IconButton
         icon={<CloseIcon />}
@@ -59,21 +64,29 @@ const FullScreenImageModal = ({
 
       {/* Contenedor principal */}
       <Flex 
-        maxW="90vw" 
-        maxH="90vh"
+        as={motion.div}
+        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        transition={{ delay: 0.1, duration: 0.4 }}
+        w="95vw" 
+        maxW="1400px"
+        h="90vh"
         direction={{ base: "column", md: "row" }}
-        borderRadius="xl"
+        borderRadius="2xl"
         overflow="hidden"
-        bg="gray.900"
+        bg="rgba(30, 30, 30, 0.4)"
+        boxShadow="0 25px 50px -12px rgba(0, 0, 0, 0.8)"
+        border="1px solid rgba(255, 255, 255, 0.1)"
       >
         {/* Imagen */}
         <Box 
-          flex={{ base: "1", md: "3" }}
-          maxH={{ base: "60vh", md: "90vh" }}
+          flex={{ base: "2", md: "3" }}
           display="flex"
           alignItems="center"
           justifyContent="center"
           bg="black"
+          position="relative"
+          overflow="hidden"
         >
           <Image
             src={imageUrl}
@@ -81,6 +94,10 @@ const FullScreenImageModal = ({
             maxW="100%"
             maxH="100%"
             objectFit="contain"
+            as={motion.img}
+            initial={{ scale: 0.95 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5 }}
           />
         </Box>
 
@@ -88,18 +105,26 @@ const FullScreenImageModal = ({
         <Flex 
           flex="1"
           direction="column"
-          p={6}
-          bg="gray.800"
+          bg="rgba(15, 15, 15, 0.95)"
           color="white"
-          overflow="auto"
-          maxH={{ base: "40vh", md: "90vh" }}
+          borderLeft={{ md: "1px solid rgba(255, 255, 255, 0.1)" }}
+          borderTop={{ base: "1px solid rgba(255, 255, 255, 0.1)", md: "none" }}
         >
+          {/* Header del Autor */}
+          <Flex p={6} borderBottom="1px solid rgba(255, 255, 255, 0.1)" align="center" gap={4}>
+            <Avatar size="md" name={author.name} src={author.avatar} border="2px solid" borderColor="brand.500" />
+            <Text fontWeight="bold" fontSize="lg" letterSpacing="wide">{author.name}</Text>
+          </Flex>
 
-
-          <Heading size="lg" mb={4}>{title}</Heading>
-          <Text fontSize="md" mb={6} color="gray.300">{description}</Text>
-
-
+          {/* Contenido (Título y Descripción) */}
+          <Box flex="1" overflowY="auto" p={6}>
+            <Heading size="md" mb={4} lineHeight="tall" bgGradient="linear(to-r, white, gray.300)" bgClip="text">
+              {title}
+            </Heading>
+            <Text fontSize="md" color="gray.300" lineHeight="relaxed">
+              {description}
+            </Text>
+          </Box>
         </Flex>
       </Flex>
     </Box>

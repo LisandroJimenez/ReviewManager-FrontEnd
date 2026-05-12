@@ -4,12 +4,13 @@ import { Toaster } from 'react-hot-toast';
 import { Suspense } from 'react';
 import Loading from './components/Loading';
 import routes from './Routes';
-import theme from './theme';
+import theme from './theme.js';
+
 
 function App() {
   let element = useRoutes(routes)
   return (
-    <ChakraProvider  >
+    <ChakraProvider theme={theme}  >
       <Suspense fallback={<Loading />}>
         {element}
       </Suspense>

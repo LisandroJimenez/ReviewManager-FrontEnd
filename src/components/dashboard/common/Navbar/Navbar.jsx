@@ -57,7 +57,8 @@ export default function Navbar({ onSelectCategory, onSearch }) {
           '0 2px 10px rgba(0,0,0,0.1)',
           '0 2px 10px rgba(0,0,0,0.3)'
         )}
-        position="sticky"
+        pos="fixed"
+        w="100%"
         top={0}
         zIndex={1000}
         initial={{ y: -20, opacity: 0 }}
@@ -66,6 +67,7 @@ export default function Navbar({ onSelectCategory, onSearch }) {
       >
         <Flex align="center" gap={3}>
           <MotionBox
+            
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -92,7 +94,7 @@ export default function Navbar({ onSelectCategory, onSearch }) {
           </MotionBox>
         </Flex>
 
-        <Flex display={{ base: "none", md: "flex" }} flex={1} justify="center">
+        <Flex display={{ base: "none", md: "flex" }} flex={1} justify="center" >
           <DesktopNav onSelectCategory={onSelectCategory} isMobile={false} />
         </Flex>
 
@@ -122,6 +124,7 @@ export default function Navbar({ onSelectCategory, onSearch }) {
 
       <Collapse in={isOpen} animateOpacity>
         <MotionBox
+          mt="70px"
           bg={mobileBg}
           backdropFilter="blur(10px)"
           borderBottom="1px solid"
