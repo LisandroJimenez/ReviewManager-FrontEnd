@@ -72,12 +72,7 @@ export const CommentSection = ({
         setCommentText("");
         setUser("");
         setShowAllComments(true);
-        toast({
-          title: "Comentario publicado.",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
+        
       }
     }
   };

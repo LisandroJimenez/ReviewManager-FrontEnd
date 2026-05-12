@@ -1,133 +1,247 @@
-import React from "react";
-import { 
-  Box, 
-  Image, 
-  Text, 
-  Heading, 
-  IconButton, 
-  Flex, 
-  Button,
-  HStack,
+import React, { useEffect, useCallback } from "react";
+import {
+  Box,
+  Image,
+  Text,
+  Heading,
+  IconButton,
+  Flex,
   Avatar,
-  useDisclosure,
-  Icon,
-  Portal
+  Portal,
+  VStack,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
-import { FaHeart, FaRegHeart, FaBookmark, FaRegBookmark, FaShare } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-const FullScreenImageModal = ({ 
-  imageUrl, 
-  title, 
-  description, 
+const MotionBox = motion(Box);
+
+const FullScreenImageModal = ({
+  imageUrl,
+  title,
+  description,
   onClose,
   author = { name: "Usuario", avatar: "" },
-
 }) => {
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (e.key === "Escape") onClose();
+    },
+    [onClose]
+  );
 
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [handleKeyDown]);
+
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) onClose();
+  };
 
   return (
     <Portal>
-
-    <Box
-      as={motion.div}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      position="fixed"
-      top="0"
-      left="0"
-      width="100vw"
-      height="100vh"
-      backgroundColor="rgba(0, 0, 0, 0.9)"
-      zIndex="9999"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      backdropFilter="blur(15px)"
-    >
-      <IconButton
-        icon={<CloseIcon />}
-        onClick={onClose}
-        position="absolute"
-        top="4"
-        right="4"
-        color="white"
-        aria-label="Cerrar imagen"
-        size="lg"
-        variant="ghost"
-        isRound
-        _hover={{ bg: "whiteAlpha.200" }}
-      />
-
-      {/* Contenedor principal */}
-      <Flex 
-        as={motion.div}
-        initial={{ scale: 0.95, opacity: 0, y: 20 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        transition={{ delay: 0.1, duration: 0.4 }}
-        w="95vw" 
-        maxW="1400px"
-        h="90vh"
-        direction={{ base: "column", md: "row" }}
-        borderRadius="2xl"
-        overflow="hidden"
-        bg="rgba(30, 30, 30, 0.4)"
-        boxShadow="0 25px 50px -12px rgba(0, 0, 0, 0.8)"
-        border="1px solid rgba(255, 255, 255, 0.1)"
+      <MotionBox
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.25 }}
+        position="fixed"
+        top="0"
+        left="0"
+        w="100vw"
+        h="100vh"
+        bg="black"
+        zIndex="9999"
+        display="flex"
+        flexDirection="column"
+        onClick={handleBackdropClick}
       >
-        {/* Imagen */}
-        <Box 
-          flex={{ base: "2", md: "3" }}
+        {/* ── Close Button ── */}
+        <IconButton
+          icon={<CloseIcon boxSize={{ base: 2.5, md: 3 }} />}
+          onClick={onClose}
+          position="absolute"
+          top={{ base: 3, md: 5 }}
+          right={{ base: 3, md: 5 }}
+          zIndex="2"
+          aria-label="Cerrar imagen"
+          size={{ base: "sm", md: "md" }}
+          isRound
+          variant="unstyled"
           display="flex"
           alignItems="center"
           justifyContent="center"
-          bg="black"
+          color="whiteAlpha.800"
+          bg="blackAlpha.500"
+          backdropFilter="blur(12px)"
+          border="1px solid"
+          borderColor="whiteAlpha.200"
+          _hover={{
+            bg: "blackAlpha.700",
+            color: "white",
+            borderColor: "whiteAlpha.400",
+            transform: "scale(1.08)",
+          }}
+          _active={{ transform: "scale(0.94)" }}
+          transition="all 0.2s"
+        />
+
+        {/* ── Image Area (fills the screen) ── */}
+        <Box
+          flex="1"
           position="relative"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
           overflow="hidden"
+          onClick={handleBackdropClick}
         >
+          {/* Soft vignette edges */}
+          <Box
+            position="absolute"
+            inset="0"
+            pointerEvents="none"
+            zIndex="1"
+            boxShadow="inset 0 0 120px 40px rgba(0,0,0,0.35)"
+          />
+
           <Image
+            as={motion.img}
+            initial={{ scale: 0.97, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.9, delay: 0.9 }}
             src={imageUrl}
             alt={title}
-            maxW="100%"
-            maxH="100%"
+            maxW={{ base: "100%", md: "92%" }}
+            maxH={{ base: "60vh", md: "78vh" }}
             objectFit="contain"
-            as={motion.img}
-            initial={{ scale: 0.95 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.5 }}
+            userSelect="none"
+            draggable="false"
+            onClick={(e) => e.stopPropagation()}
           />
         </Box>
 
-        {/* Panel lateral */}
-        <Flex 
-          flex="1"
-          direction="column"
-          bg="rgba(15, 15, 15, 0.95)"
-          color="white"
-          borderLeft={{ md: "1px solid rgba(255, 255, 255, 0.1)" }}
-          borderTop={{ base: "1px solid rgba(255, 255, 255, 0.1)", md: "none" }}
+        {/* ── Bottom Info Overlay ── */}
+        <Box
+          as={motion.div}
+          initial={{ y: 40, opacity: 0 }}
+          animate={{ y: 1, opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.9 }}
+          position="relative"
+          w="100%"
+          flexShrink="0"
+          onClick={(e) => e.stopPropagation()}
         >
-          {/* Header del Autor */}
-          <Flex p={6} borderBottom="1px solid rgba(255, 255, 255, 0.1)" align="center" gap={4}>
-            <Avatar size="md" name={author.name} src={author.avatar} border="2px solid" borderColor="brand.500" />
-            <Text fontWeight="bold" fontSize="lg" letterSpacing="wide">{author.name}</Text>
-          </Flex>
+          {/* Gradient fade into the panel */}
+          <Box
+            position="absolute"
+            top="-60px"
+            left="0"
+            right="0"
+            h="60px"
+            bgGradient="linear(to-t, rgba(0,0,0,0.85), transparent)"
+            pointerEvents="none"
+          />
 
-          {/* Contenido (Título y Descripción) */}
-          <Box flex="1" overflowY="auto" p={6}>
-            <Heading size="md" mb={4} lineHeight="tall" bgGradient="linear(to-r, white, gray.300)" bgClip="text">
-              {title}
-            </Heading>
-            <Text fontSize="md" color="gray.300" lineHeight="relaxed">
-              {description}
-            </Text>
+          <Box
+            bg="rgba(10, 10, 14, 0.92)"
+            backdropFilter="blur(24px)"
+            borderTop="1px solid"
+            borderColor="whiteAlpha.100"
+            px={{ base: 5, md: 10 }}
+            py={{ base: 4, md: 5 }}
+            maxH={{ base: "38vh", md: "auto" }}
+            overflowY={{ base: "auto", md: "visible" }}
+            sx={{
+              "&::-webkit-scrollbar": { width: "3px" },
+              "&::-webkit-scrollbar-thumb": {
+                bg: "whiteAlpha.200",
+                borderRadius: "full",
+              },
+            }}
+          >
+            <Flex
+              maxW="1100px"
+              mx="auto"
+              direction={{ base: "column", md: "row" }}
+              align={{ base: "flex-start", md: "center" }}
+              gap={{ base: 3, md: 6 }}
+            >
+              {/* Author */}
+              <Flex
+                align="center"
+                gap={3}
+                flexShrink="0"
+              >
+                <Avatar
+                  size="sm"
+                  name={author.name}
+                  src={author.avatar}
+                  border="2px solid"
+                  borderColor="teal.400"
+                />
+                <Box>
+                  <Text
+                    color="white"
+                    fontWeight="600"
+                    fontSize={{ base: "sm", md: "sm" }}
+                    lineHeight="1.2"
+                  >
+                    {author.name}
+                  </Text>
+                  <Text color="whiteAlpha.500" fontSize="xs">
+                    Autor
+                  </Text>
+                </Box>
+              </Flex>
+
+              {/* Vertical divider (desktop) */}
+              <Box
+                display={{ base: "none", md: "block" }}
+                w="1px"
+                alignSelf="stretch"
+                bg="whiteAlpha.200"
+                flexShrink="0"
+              />
+
+              {/* Horizontal divider (mobile) */}
+              <Box
+                display={{ base: "block", md: "none" }}
+                h="1px"
+                w="100%"
+                bg="whiteAlpha.100"
+              />
+
+              {/* Title + Description */}
+              <VStack align="flex-start" spacing={1} flex="1" minW="0">
+                <Heading
+                  size={{ base: "sm", md: "sm" }}
+                  color="white"
+                  fontWeight="700"
+                  lineHeight="1.3"
+                  noOfLines={{ base: 2, md: 1 }}
+                >
+                  {title}
+                </Heading>
+                {description && (
+                  <Text
+                    fontSize={{ base: "xs", md: "sm" }}
+                    color="whiteAlpha.600"
+                    lineHeight="1.5"
+                    noOfLines={{ base: 3, md: 2 }}
+                  >
+                    {description}
+                  </Text>
+                )}
+              </VStack>
+            </Flex>
           </Box>
-        </Flex>
-      </Flex>
-    </Box>
+        </Box>
+      </MotionBox>
     </Portal>
   );
 };
