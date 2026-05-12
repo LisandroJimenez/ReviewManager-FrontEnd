@@ -139,22 +139,22 @@ const FullScreenImageModal = ({
           {/* Gradient fade into the panel */}
           <Box
             position="absolute"
-            top="-60px"
+            top="-80px"
             left="0"
             right="0"
-            h="60px"
-            bgGradient="linear(to-t, rgba(0,0,0,0.85), transparent)"
+            h="80px"
+            bgGradient="linear(to-t, rgba(0,0,0,0.9), transparent)"
             pointerEvents="none"
           />
 
           <Box
-            bg="rgba(10, 10, 14, 0.92)"
+            bg="rgba(10, 10, 14, 0.95)"
             backdropFilter="blur(24px)"
             borderTop="1px solid"
             borderColor="whiteAlpha.100"
-            px={{ base: 5, md: 10 }}
-            py={{ base: 4, md: 5 }}
-            maxH={{ base: "38vh", md: "auto" }}
+            px={{ base: 4, sm: 5, md: 10 }}
+            py={{ base: 5, md: 5 }}
+            maxH={{ base: "45vh", md: "auto" }}
             overflowY={{ base: "auto", md: "visible" }}
             sx={{
               "&::-webkit-scrollbar": { width: "3px" },
@@ -169,7 +169,7 @@ const FullScreenImageModal = ({
               mx="auto"
               direction={{ base: "column", md: "row" }}
               align={{ base: "flex-start", md: "center" }}
-              gap={{ base: 3, md: 6 }}
+              gap={{ base: 4, md: 6 }}
             >
               {/* Author */}
               <Flex
@@ -178,7 +178,7 @@ const FullScreenImageModal = ({
                 flexShrink="0"
               >
                 <Avatar
-                  size="sm"
+                  size={{ base: "md", md: "sm" }}
                   name={author.name}
                   src={author.avatar}
                   border="2px solid"
@@ -188,7 +188,7 @@ const FullScreenImageModal = ({
                   <Text
                     color="white"
                     fontWeight="600"
-                    fontSize={{ base: "sm", md: "sm" }}
+                    fontSize="sm"
                     lineHeight="1.2"
                   >
                     {author.name}
@@ -217,22 +217,22 @@ const FullScreenImageModal = ({
               />
 
               {/* Title + Description */}
-              <VStack align="flex-start" spacing={1} flex="1" minW="0">
+              <VStack align="flex-start" spacing={{ base: 2, md: 1 }} flex="1" minW="0" w="100%">
                 <Heading
                   size={{ base: "sm", md: "sm" }}
                   color="white"
                   fontWeight="700"
-                  lineHeight="1.3"
-                  noOfLines={{ base: 2, md: 1 }}
+                  lineHeight="1.4"
+                  noOfLines={{ md: 1 }}
                 >
                   {title}
                 </Heading>
                 {description && (
                   <Text
-                    fontSize={{ base: "xs", md: "sm" }}
-                    color="whiteAlpha.600"
-                    lineHeight="1.5"
-                    noOfLines={{ base: 3, md: 2 }}
+                    fontSize={{ base: "sm", md: "sm" }}
+                    color="whiteAlpha.700"
+                    lineHeight="1.6"
+                    noOfLines={{ md: 2 }}
                   >
                     {description}
                   </Text>
